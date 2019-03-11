@@ -112,11 +112,11 @@ h3 {
 }
 
 .app .controls a i {
-  font-size: 18px;
+  font-size: 64px;
 }
 
 .app .controls #take-photo i {
-  font-size: 32px;
+  font-size: 64px;
 }
 
 .app canvas {
@@ -143,11 +143,11 @@ h3 {
   }
 
   .app .controls a i {
-    font-size: 16px;
+    font-size: 64px;
   }
 
   .app .controls #take-photo i {
-    font-size: 24px;
+    font-size: 64px;
   }
 }
 
@@ -162,10 +162,10 @@ h3 {
   }
 
   .app .controls a i {
-    font-size: 12px;
+    font-size: 64px;
   }
 
   .app .controls #take-photo i {
-    font-size: 18px;
+    font-size: 64px;
   }
 }
