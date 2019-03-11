@@ -31,7 +31,7 @@ if (!navigator.getMedia) {
   // Request the camera.
   navigator.getMedia(
     {
-      video: true
+      video: { facingMode: "environment" }
     },
     // Success Callback
     function(stream) {
