@@ -1,157 +1,47 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <head>
-      <title>MobileNet Classifier</title>
-      <script src="https://unpkg.com/ml5@0.1.3/dist/ml5.min.js"></script>
-    </head>
+    <title>MyClassifier - Powered by MobileNet</title>
+    <link rel="stylesheet" href="src/home.css" />
+    <script src="https://unpkg.com/ml5@0.1.3/dist/ml5.min.js"></script>
+    <meta charset="UTF-8" />
+  </head>
 
-  <body onload="init();">
-    <h1>Image classification using MobileNet</h1>
-    <p>The MobileNet model labeled this as
-    <span id="result">...</span> with a confidence of
-    <span id="probability">...</span></p>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Love_Coffee.jpg"
-     crossorigin="anonymous" id="image" width="400">
-    <p>Change Image - Please enter URL of the image, that you want to Classify</p>
-    <input type = "text" id="inurl" placeholder="https://upload.wikimedia.org/wikipedia/commons/c/cf/Euplectes_afer_by_Mike%27s_Birds.jpg"></input>
-    <button type = "submit" id ="newimage" onclick="changeImage()">Classify!</button>
+  <body>
+    <div class="container">
+      <div class="app">
+        <a href="#" id="start-camera" class="visible"
+          >Touch here to start the app.</a
+        >
+        <video id="camera-stream"></video> <img id="snap" />
 
-    <button onclick="startWebcam();">Start WebCam</button>
-    <button onclick="stopWebcam();">Stop WebCam</button> 
-       <button onclick="snapshot();">Take Snapshot</button> 
-    </p>
-    <video onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
-  <p>
+        <p id="error-message"></p>
 
-        Screenshots : <p>
-      <canvas  id="myCanvas" width="400" height="350"></canvas>  
-      <button type = "livesubmit" id ="livenewimage" onclick="livechangeImage()">Classify on the above image!</button>
-  <script>
-      //--------------------
-      // GET USER MEDIA CODE
-      //--------------------
-          navigator.getUserMedia = ( navigator.getUserMedia ||
-                             navigator.webkitGetUserMedia ||
-                             navigator.mozGetUserMedia ||
-                             navigator.msGetUserMedia);
+        <div class="controls">
+          <a href="#" id="delete-photo" title="Delete Photo" class="disabled"
+            ><i class="material-icons">delete</i></a
+          >
+          <a href="#" id="take-photo" title="Take Photo"
+            ><i class="material-icons">camera_alt</i></a
+          >
+          <a
+            href="#"
+            id="download-photo"
+            download="shreyansh.png"
+            title="Save Photo"
+            class="disabled"
+            ><i class="material-icons">file_download</i></a
+          >
+          <a href="#" id="api-photo" title="Send Request to Model" class="disabled"
+            ><i class="material-icons">sentiment_very_satisfied</i></a
+          >
+        </div>
 
-      var video;
-      var webcamStream;
-
-      function startWebcam() {
-        if (navigator.getUserMedia) {
-           navigator.getUserMedia (
-
-              // constraints
-              {
-                 video: { facingMode: "environment" },
-                 audio: false
-              },
-
-              // successCallback
-              function(localMediaStream) {
-                 video = document.querySelector('video');
-                 video.srcObject = localMediaStream;
-                 webcamStream = localMediaStream;
-              },
-
-              // errorCallback
-              function(err) {
-                 console.log("The following error occured: " + err);
-              }
-           );
-        } else {
-           console.log("getUserMedia not supported");
-        }  
-      }
-
-      function stopWebcam() {
-          webcamStream.getVideoTracks()[0].stop();
-      }
-      //---------------------
-      // TAKE A SNAPSHOT CODE
-      //---------------------
-      var canvas, ctx;
-
-      function init() {
-        // Get the canvas and obtain a context for
-        // drawing in it
-        canvas = document.getElementById("myCanvas");
-        ctx = canvas.getContext('2d');
-      }
-
-      function snapshot() {
-         // Draws current image from the video element into the canvas
-        ctx.drawImage(video, 0,0, canvas.width, canvas.height);
-      }
-
-      // The image we want to classify
-      const image = document.getElementById('image');
-      // The result tag in the HTML
-      const result = document.getElementById('result');
-      // The probability tag in the HTML
-      const probability = document.getElementById('probability');
-
-      // Initialize the Image Classifier method with MobileNet
-      const classifier = ml5.imageClassifier('MobileNet', function() {
-        console.log('Model Loaded!');
-      });
-
-      // Make a prediction with the selected image
-      // This will return an array with a default of 10 options with their probabilities
-      classifier.predict(image, function(err, results) {
-        result.innerText = results[0].className;
-        probability.innerText = results[0].probability.toFixed(4);
-        results=[];
-      	err=[];
-      });
-
-      //setup before functions
-	 var typingTimer;                //timer identifier
-	 var doneTypingInterval = 5;  //time in ms (5 seconds)
-	 var myInput = document.getElementById('inurl');
-	 myInput.addEventListener('keyup', function(e){
-	    clearTimeout(typingTimer);
-	    if (myInput.value) {
-	        typingTimer = setTimeout(doneTyping, doneTypingInterval);
-	    }
-	});
-
-	 //user is "finished typing," do something
-	function doneTyping () {
-	    var newurl = document.getElementById("inurl").value;
-      	document.getElementById("image").src=newurl;
-	}
-
-	function livechangeImage(){
-		result.innerText = "...";
-        probability.innerText = "...";
-      	results=[];
-      	err=[];
-
-      	classifier.predict(ctx, function(err, results) {
-        result.innerText = results[0].className;
-        probability.innerText = results[0].probability.toFixed(4);
-        results=[];
-      	err=[];
-      });
-	}
-
-      function changeImage(){
-      	result.innerText = "...";
-        probability.innerText = "...";
-      	results=[];
-      	err=[];
-
-      	classifier.predict(image, function(err, results) {
-        result.innerText = results[0].className;
-        probability.innerText = results[0].probability.toFixed(4);
-        results=[];
-      	err=[];
-      });
-      }
-
-    </script>
+        <!-- Hidden canvas element. Used for taking snapshot of video. -->
+        <canvas></canvas>
+      </div>
+    </div>
+    <h3>MyClassifier - Powered by MobileNet</h3>
+    <script src="src/home.js"></script>
   </body>
 </html>
