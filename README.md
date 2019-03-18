@@ -1,3 +1,4 @@
 # myclassifier-ml5
 
-MyClassifier - Powered by MobileNet - https://myclassifier.herokuapp.com
+MyClassifier - Powered by MobileNet - [Heroku Environment](https://myclassifier.herokuapp.com/)
+[GitHub App](https://shreyanshp.github.io/myclassifier/home.html)
